@@ -1,7 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const rateLimit = require('express-rate-limit');
@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 
 app.use(rateLimit({
@@ -25,14 +26,16 @@ app.use(rateLimit({
 
 // MySQL connection with better error handling
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '1234',
+  host: process.env.DB_HOST || 'shoedbserver.mysql.database.azure.com',
+  user: process.env.DB_USER || 'root123',
+  password: process.env.DB_PASSWORD || 'WEhfT7?dW#y*RZ8',
   database: process.env.DB_NAME || 'shoe_store',
-  acquireTimeout: 60000,
-  timeout: 60000,
-  reconnect: true
-});
+  ssl: {
+    rejectUnauthorized: true
+  },
+  connectTimeout: 60000  
+  });
+
 
 // Connect to database with retry logic
 const connectToDatabase = () => {
@@ -3051,14 +3054,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Internal server error' });
 });
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
+console.log('Serving from:', path.join(__dirname, '..', 'client', 'dist'));
 
 // Start server
 app.listen(PORT, () => {
