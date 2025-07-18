@@ -29,7 +29,8 @@ jobs:
           npm run build
           cd ..
 
-    
+      - name: Check dist folder
+        run: ls -l client/dist
 
       # Install backend dependencies
       - name: Install Backend
