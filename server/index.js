@@ -26,10 +26,10 @@ app.use(rateLimit({
 
 // MySQL connection with better error handling
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || 'shoedbserver.mysql.database.azure.com',
-  user: process.env.DB_USER || 'root123',
-  password: process.env.DB_PASSWORD || 'WEhfT7?dW#y*RZ8',
-  database: process.env.DB_NAME || 'shoe_store',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   ssl: {
     rejectUnauthorized: true
   },
