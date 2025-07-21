@@ -6,6 +6,5 @@ Dockerfile
 .gitignore
 README.md
 *.log
-.env
 client/node_modules
 server/node_modules
